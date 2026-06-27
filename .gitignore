@@ -1,0 +1,20 @@
+# Entornos y dependencias
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Variables de entorno con claves reales
+.env
+
+# Datos locales (CSV de cartera exportados del bróker, etc.)
+*.csv
+!docs/*.csv
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+*.log
