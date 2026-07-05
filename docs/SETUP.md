@@ -1,64 +1,71 @@
-# Guía de instalación
+# Setup detallado
 
-## Requisitos previos
+## 1. Requisitos
 
-- Python 3.10–3.13
-- Cuenta gratuita en [Financial Modeling Prep](https://site.financialmodelingprep.com/developer/docs) (clave API)
-- Cuenta gratuita en [FRED](https://fred.stlouisfed.org/docs/api/api_key.html) (clave API)
+- Python 3.10+
+- Node.js 18+ (para el frontend React)
+- Claves API gratuitas: FMP y FRED.
 
-## 1. Entorno virtual
+## 2. Claves API
+
+Copia `.env.example` a `.env` y rellena:
+
+- `FMP_API_KEY` — https://site.financialmodelingprep.com/developer/docs
+- `FRED_API_KEY` — https://fred.stlouisfed.org/docs/api/api_key.html
+
+Opcionales: `PORT`, `BASE_CURRENCY`, `PRICE_REFRESH_MINUTES`, `ALERT_CHECK_MINUTES`.
+
+Verifica las claves: `python scripts/setup_keys.py`.
+
+## 3. Backend
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Windows PowerShell: .venv\Scripts\Activate.ps1
-```
-
-## 2. Dependencias
-
-```bash
+source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-Esto instala OpenBB Platform, FastAPI/Uvicorn para el backend, y pandas/python-dotenv como utilidades. La instalación de OpenBB puede tardar varios minutos.
-
-## 3. Claves API
+## 4. Frontend
 
 ```bash
-cp .env.example .env
+cd frontend
+npm install
+npm run build      # genera frontend/dist (lo sirve el backend)
+# o, en desarrollo con recarga:
+npm run dev        # http://localhost:5173, proxya /api -> :8000
 ```
 
-Edita `.env` y pega tus claves de FMP y FRED (los enlaces para sacarlas gratis están en el propio archivo).
+> Si vienes de una versión anterior y `frontend/node_modules` da problemas,
+> bórralo y vuelve a ejecutar `npm install`.
 
-## 4. Verificación
+## 5. Arrancar
 
 ```bash
-python scripts/setup_keys.py
+uvicorn backend.app:app --reload      # todo en http://localhost:8000
 ```
 
-Este script comprueba que `.env` existe, que las claves no están vacías, y hace una llamada de prueba a OpenBB.
+En Windows puedes usar directamente `start.ps1` (producción) o `start-dev.ps1`
+(desarrollo).
 
-## 5. Probar los tres casos de uso
+## 6. Importar tu cartera de MyInvestor
 
-```bash
-python src/thesis_energy.py
-python src/politician_tracker.py --build-watchlist
-python src/portfolio_tracker.py --watchlist AAPL MSFT NVDA
+1. Exporta tu cartera o tus movimientos desde MyInvestor (CSV o Excel).
+2. En la web, ve a **Importar**, sube el archivo y revisa la vista previa.
+3. Confirma. Se detectan fondos (ISIN), acciones/ETF y movimientos
+   automáticamente.
+
+## 7. Alertas en segundo plano
+
+Mientras el backend esté arrancado, el scheduler refresca precios y evalúa
+alertas. Para dispararlo desde el Programador de tareas de Windows:
+
+```
+POST http://localhost:8000/api/alerts/refresh-prices
+POST http://localhost:8000/api/alerts/check
 ```
 
-## 6. Backend para OpenBB Workspace (opcional)
+## 8. OpenBB Workspace (opcional)
 
-```bash
-bash backend/run_backend.sh
-```
-
-Luego, en [pro.openbb.co](https://pro.openbb.co): **Apps → Connect backend → `http://localhost:8000`**.
-
-## Notas sobre versiones de OpenBB
-
-Los nombres exactos de algunos endpoints (especialmente el screener y `government.trades`) pueden cambiar entre versiones de OpenBB. Los scripts de este proyecto intentan varias rutas conocidas automáticamente y avisan si ninguna funciona. Si te encuentras con un error de "endpoint no encontrado", usa la skill `openbb-query` (o ejecuta `python .claude/skills/openbb-query/scripts/list_endpoints.py`) para descubrir el nombre real en tu instalación.
-
-## Problemas frecuentes
-
-- **`pip install` se queda colgado o tarda mucho**: es normal, OpenBB tiene muchas dependencias. Espera unos minutos; si falla, prueba `pip install --no-cache-dir -r requirements.txt`.
-- **Error de clave API inválida**: revisa que copiaste la clave completa en `.env` sin comillas ni espacios.
-- **`ModuleNotFoundError: No module named 'openbb'`**: asegúrate de tener el entorno virtual activado (`source .venv/bin/activate`) antes de ejecutar los scripts.
+Conecta el backend desde https://pro.openbb.co (Apps → Connect backend →
+`http://localhost:8000`). Los endpoints legacy `/thesis`, `/politician-trades` y
+`/portfolio` siguen disponibles.
