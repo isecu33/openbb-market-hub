@@ -3,3 +3,19 @@ fastapi>=0.110
 uvicorn[standard]>=0.29
 python-dotenv>=1.0
 pandas>=2.0
+
+# --- Persistencia y modelos ---
+sqlmodel>=0.0.16
+
+# --- Import de ficheros MyInvestor (Excel/CSV) ---
+openpyxl>=3.1
+python-multipart>=0.0.9
+
+# --- Tareas programadas en segundo plano (refresco de precios y alertas) ---
+apscheduler>=3.10
+
+# --- Cliente HTTP para fuentes alternativas (precios de fondos por ISIN, etc.) ---
+httpx>=0.27
+
+# --- Opcional: briefing de sugerencias redactado por Claude (necesita ANTHROPIC_API_KEY) ---
+anthropic>=0.40

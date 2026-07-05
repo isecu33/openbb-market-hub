@@ -4,11 +4,21 @@ venv/
 __pycache__/
 *.pyc
 
+# Frontend (React/Vite)
+frontend/node_modules/
+frontend/dist/
+
+# Base de datos local y datos persistentes
+data/
+*.db
+
 # Variables de entorno con claves reales
 .env
 
-# Datos locales (CSV de cartera exportados del bróker, etc.)
+# Datos locales (CSV/Excel de cartera exportados del bróker, etc.)
 *.csv
+*.xlsx
+*.xls
 !docs/*.csv
 
 # Editor / OS
@@ -18,3 +28,6 @@ __pycache__/
 
 # Logs
 *.log
+
+# Frontend antiguo (respaldo del HTML plano)
+frontend-legacy/
