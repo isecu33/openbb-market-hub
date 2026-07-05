@@ -19,15 +19,30 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from collections import Counter
 from datetime import datetime, timedelta
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde .env
+ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT / ".env")
 
 try:
     from openbb import obb
 except ImportError:
     print("Falta instalar OpenBB. Ejecuta: pip install -r requirements.txt")
     sys.exit(1)
+
+# Cargar credenciales en OpenBB
+try:
+    obb.user.credentials.fmp_api_key = os.getenv("FMP_API_KEY")
+    obb.user.credentials.fred_api_key = os.getenv("FRED_API_KEY")
+except Exception:
+    pass  # Si falla, OpenBB intentará usar las credenciales del sistema
 
 
 STOCK_ACT_DISCLOSURE_DELAY_DAYS = 45
@@ -91,9 +106,9 @@ def build_mirror_watchlist(trades, min_trades: int = 2) -> list[tuple[str, int]]
 
 def print_disclosure_warning():
     print(
-        f"\n⚠️  Recuerda: la STOCK Act permite hasta {STOCK_ACT_DISCLOSURE_DELAY_DAYS} días "
-        "de retraso en la divulgación. La fecha de 'transacción' que ves puede ser muy "
-        "anterior a la fecha en que se hizo pública. No uses esto para timing de entrada/salida.\n"
+        f"\n[!] AVISO: la STOCK Act permite hasta {STOCK_ACT_DISCLOSURE_DELAY_DAYS} dias "
+        "de retraso en la divulgacion. La fecha de 'transaccion' que ves puede ser muy "
+        "anterior a la fecha en que se hizo publica. No uses esto para timing de entrada/salida.\n"
     )
 
 
