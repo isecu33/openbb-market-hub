@@ -1,5 +1,10 @@
 # OpenBB Market Hub
 
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 Plataforma personal de research e inversión, autoalojada, construida sobre
 [OpenBB Platform](https://github.com/OpenBB-finance/OpenBB) con un **backend
 FastAPI** y un **frontend React (Vite + Tailwind + shadcn-style)**.
@@ -7,6 +12,10 @@ FastAPI** y un **frontend React (Vite + Tailwind + shadcn-style)**.
 No sustituye a tu bróker (MyInvestor) para precios en vivo ni ejecución: es una
 capa de *research y seguimiento*. Como MyInvestor no tiene API pública, la
 cartera se alimenta importando tus exportaciones (CSV/Excel).
+
+## Screenshots
+
+> TODO: add dashboard screenshots
 
 ## Qué puedes hacer
 
@@ -159,3 +168,15 @@ para conectar el backend desde [pro.openbb.co](https://pro.openbb.co).
   varias rutas antes de rendirse (no asumas que un endpoint es estable).
 
 MIT License.
+
+## English Summary
+
+OpenBB Market Hub is a self-hosted personal investment research and portfolio
+tracking platform built on the [OpenBB Platform](https://github.com/OpenBB-finance/OpenBB),
+with a **FastAPI** backend and a **React (Vite + Tailwind)** frontend. It
+consolidates portfolio positions imported from broker exports, live market
+data, news with sentiment and importance scoring, rule-based and AI-assisted
+daily/weekly suggestions, performance analytics (Sharpe ratio, drawdown,
+benchmark comparison), and price/news alerts, all running locally under the
+user's own infrastructure. It is a research and tracking companion, not a
+trading or execution platform, and it is licensed under MIT.
